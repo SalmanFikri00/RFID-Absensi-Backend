@@ -22,7 +22,7 @@ const moduleController = asyncHandler( async ( req, res ) => {
 
         console.log('nyari murid')
         const muridExist = await Murid.findOne({RF_ID : key})
-        console.log(muridExist)
+        // console.log(muridExist)
 
 
 
@@ -48,7 +48,7 @@ const moduleController = asyncHandler( async ( req, res ) => {
                 kelas : module.mode,
                 nama : '',
                 alamat: '',
-                nis : ''  
+                nis : '',
             })
 
             console.log(result)

@@ -15,8 +15,9 @@ const errorHandler = ( err , req , res )=> {
         massage = 'Resource not found'
     }
 
+    
     res.status( statusCode).json({
-        massage,
+        massage, 
         stack : procces.env.NODE_ENV == 'production' ? null : err.stack
     })
 }

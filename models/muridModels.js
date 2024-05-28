@@ -21,7 +21,6 @@ const muridSchema = mongoose.Schema({
     nis: {
         type: String,
         required: false,
-        unique: true
     }
 },{
     timeStamp: true

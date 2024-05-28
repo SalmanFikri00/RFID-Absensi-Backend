@@ -5,6 +5,9 @@ import Murid from '../models/muridModels.js'
 const moduleController = asyncHandler( async ( req, res ) => {
 
     const { key } = req.body
+    let response = {}
+
+    console.log(key)
 
     const kode_id = req.params.id
 
@@ -17,14 +20,21 @@ const moduleController = asyncHandler( async ( req, res ) => {
         
         // fungsi absen bebas mau di apain
 
-        // Murid.findOne({RF_ID : key})
+        console.log('nyari murid')
+        const muridExist = await Murid.findOne({RF_ID : key})
+        console.log(muridExist)
 
 
 
 
-
+        response = {
+            message : 'succes',
+            data : muridExist
+        }
         
         
+        
+
         
         
     }else{
@@ -33,7 +43,6 @@ const moduleController = asyncHandler( async ( req, res ) => {
 
         if( !exist ){
 
-            
             const result = await Murid.create({
                 RF_ID : key,
                 kelas : module.mode,
@@ -44,16 +53,21 @@ const moduleController = asyncHandler( async ( req, res ) => {
 
             console.log(result)
         
-            res.json({
-                message: 'kartu berhasil ter registrasi di kelas'+ module.mode
-            })
+            response = {
+                message : 'berhasil membuat',
+            }
+
+        }else{
+            
+        response = {
+            message : 'telah tersedia',
         }
-
-    res.json({
-        message: 'kartu telah di buat'
-    })
-
+            
+        }
     }
+
+    // res.json(response)
+    res.status(200).json(response)
 
 })
 

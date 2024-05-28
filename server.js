@@ -12,7 +12,6 @@ import cookieParser from 'cookie-parser';
 const app = express()
 
 
-
 //wajibe
 
 app.use(cookieParser())

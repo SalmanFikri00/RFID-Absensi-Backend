@@ -11,4 +11,4 @@ const kelasSchema = new mongoose.Schema({
 
 const Kelas = mongoose.model('Kelas', kelasSchema);
 
-export default Kelas;
+export default Kelas; 

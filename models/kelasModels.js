@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 const kelasSchema = new mongoose.Schema({
     nama_kelas: {
         type: String,
-        required: true
+        allowNull: false,
+    },
+    edit_by: {
+        type: String,
     }
 }, {
     timestamps: true

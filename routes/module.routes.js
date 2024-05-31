@@ -4,5 +4,4 @@ const router = express.Router()
 
 router.post('/:id' , moduleController )
 
-
 export default router

@@ -1,9 +1,16 @@
-import asyncHandler from 'express-async-handler'
-import Iot from '../models/iotModels.js'
-import Murid from '../models/muridModels.js'
+import asyncHandler from "express-async-handler";
+import moment from "moment";
+import Iot from "../models/iotModels.js";
+import Murid from "../models/muridModels.js";
+import Absen from "../models/absenModel.js";
 
-const moduleController = asyncHandler( async ( req, res ) => {
+const moduleController = asyncHandler(async (req, res) => {
+    let response = {};
+    const { key } = req.body;
+    const kode_id = req.params.id;
+    const module = await Iot.findOne({ kode_id });
 
+<<<<<<< HEAD
     const { key } = req.body
     let response = {}
 
@@ -72,7 +79,52 @@ const moduleController = asyncHandler( async ( req, res ) => {
 
     // res.json(response)
     // res.status(200).json(response)
+=======
+    const currentTime = moment();
+    const batasWaktu = moment().set({ hour: 6, minute: 30 });
+    let keterangan = "";
+    if (currentTime.isBefore(batasWaktu)) {
+        keterangan = "Masuk";
+    } else {
+        keterangan = "Terlambat";
+    }
 
-})
+    if (!module || module.mode == "absen") {
+        const muridExist = await Murid.findOne({ RF_ID: key });
+        const Absensi = await Absen.create({
+            nama: muridExist.nama,
+            kelas: muridExist.kelas,
+            keterangan: keterangan,
+            tanggal: currentTime.format("YYYY-MM-DD")
+        });
+        response = {
+            message: "succes",
+            data: Absensi,
+        };
+        
+    } else {
+        const exist = await Murid.findOne({ RF_ID: key });
+        if (!exist) {
+            const result = await Murid.create({
+                RF_ID: key,
+                kelas: module.mode,
+                nama: "haloo",
+                alamat: "",
+                nis: "",
+            });
+>>>>>>> e538e5a5e9d7723dfa0f8eb18fea9eedf8474bca
 
-export { moduleController }
+            response = {
+                message: "berhasil membuat",
+                data: result,
+            };
+        } else {
+            response = {
+                message: "telah tersedia",
+            };
+        }
+    }
+    res.status(200).json(response);
+});
+
+export { moduleController };

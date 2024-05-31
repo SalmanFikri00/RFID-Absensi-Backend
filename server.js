@@ -10,7 +10,13 @@ import connectDB from './config/connstDB.js';
 const port = process.env.PORT || 5000
 import cookieParser from 'cookie-parser';
 const app = express()
+import cors from 'cors'
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 
 //wajibe
 
@@ -18,13 +24,18 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
+  }));
 
 //Nambahin Route Dari folder routes
 
 app.use('/', moduleRoutes)
 app.use('/users', userRoutes)
 app.use('/app', appRoutes)
+
 
 
 

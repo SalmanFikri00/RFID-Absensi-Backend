@@ -24,19 +24,23 @@ const moduleController = asyncHandler( async ( req, res ) => {
         const muridExist = await Murid.findOne({RF_ID : key})
         // console.log(muridExist)
 
+        if(muridExist){
 
-
-
-        response = {
-            message : 'succes',
-            data : muridExist
+            res.json({
+                message : 'success mass ',
+                data : muridExist
+            }).status(200)
+        }else{
+            res.status(400).json({
+                message : 'wahh gagal mass',
+                data : muridExist
+            })
         }
-        
-        
-        
+            
 
         
         
+
     }else{
         
         const exist = await Murid.findOne({RF_ID : key})
@@ -53,21 +57,21 @@ const moduleController = asyncHandler( async ( req, res ) => {
 
             console.log(result)
         
-            response = {
-                message : 'berhasil membuat',
-            }
+            res.json({
+                message: 'succes'
+            })
 
         }else{
             
-        response = {
-            message : 'telah tersedia',
-        }
+        res.status(400).json({
+            message: 'telah tersedia'
+        })
             
         }
     }
 
     // res.json(response)
-    res.status(200).json(response)
+    // res.status(200).json(response)
 
 })
 

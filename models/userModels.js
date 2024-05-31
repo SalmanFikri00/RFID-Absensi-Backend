@@ -6,14 +6,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    kelas: {
-        type: Number,
-        required: true
-    },
-    nomor: {
-        type: Number,
-        required: true
-    },
     email: {
         type: String,
         required: true,

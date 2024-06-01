@@ -12,9 +12,7 @@ const setIotData = asyncHandler(async (req, res) => {
 
     const exists = await Iot.findOne({ kode_id });
 
-    const existsKelas = await Kelas.findOne({
-        nama_kelas: mode,
-    });
+
 
     if (!exists) {
         const newIot = await Iot.create({ kode_id, mode });
@@ -24,12 +22,20 @@ const setIotData = asyncHandler(async (req, res) => {
         });
     }
 
+    console.log(exists.mode)
+
+    const existsKelas = await Kelas.findOne({
+        nama_kelas: (mode == 'absen' ? exists.mode : mode),
+    });
+
+    console.log(existsKelas)
+
     exists.mode = mode;
     await exists.save();
 
     // if existsKelas is found, update it
     if (existsKelas) {
-        existsKelas.edit_by = kode_id;
+        existsKelas.edit_by = (mode == 'absen' ? '' : kode_id);
         await existsKelas.save();
     }
 

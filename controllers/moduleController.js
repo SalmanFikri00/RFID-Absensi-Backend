@@ -10,76 +10,6 @@ const moduleController = asyncHandler(async (req, res) => {
     const kode_id = req.params.id;
     const module = await Iot.findOne({ kode_id });
 
-<<<<<<< HEAD
-    const { key } = req.body
-    let response = {}
-
-    console.log(key)
-
-    const kode_id = req.params.id
-
-    console.log(kode_id)
-
-    const module = await Iot.findOne({kode_id})
-
-    if( !module || module.mode == 'absen' ){
-
-        
-        // fungsi absen bebas mau di apain
-
-        console.log('nyari murid')
-        const muridExist = await Murid.findOne({RF_ID : key})
-        // console.log(muridExist)
-
-        if(muridExist){
-
-            res.json({
-                message : 'success mass ',
-                data : muridExist
-            }).status(200)
-        }else{
-            res.status(400).json({
-                message : 'wahh gagal mass',
-                data : muridExist
-            })
-        }
-            
-
-        
-        
-
-    }else{
-        
-        const exist = await Murid.findOne({RF_ID : key})
-
-        if( !exist ){
-
-            const result = await Murid.create({
-                RF_ID : key,
-                kelas : module.mode,
-                nama : '',
-                alamat: '',
-                nis : '',
-            })
-
-            console.log(result)
-        
-            res.json({
-                message: 'succes'
-            })
-
-        }else{
-            
-        res.status(400).json({
-            message: 'telah tersedia'
-        })
-            
-        }
-    }
-
-    // res.json(response)
-    // res.status(200).json(response)
-=======
     const currentTime = moment();
     const batasWaktu = moment().set({ hour: 6, minute: 30 });
     let keterangan = "";
@@ -112,7 +42,6 @@ const moduleController = asyncHandler(async (req, res) => {
                 alamat: "",
                 nis: "",
             });
->>>>>>> e538e5a5e9d7723dfa0f8eb18fea9eedf8474bca
 
             response = {
                 message: "berhasil membuat",

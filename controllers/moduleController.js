@@ -81,6 +81,7 @@ const getAbsensiByKelas = asyncHandler(async (req, res) => {
 
 const getAbsensiByTanggal = asyncHandler(async(req, res) => {
     const { tanggal } = req.params;
+    console.log(tanggal)
     const findTanggal = await Absen.find({ tanggal });
     return res.status(200).json({ data: findTanggal });
 })

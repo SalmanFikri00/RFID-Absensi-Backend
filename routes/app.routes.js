@@ -12,7 +12,7 @@ router.post("/kelas/add", addKelasController);
 
 router.post("/kelas/edit", editKelasController);
 
-router.delete("/kelas/delete", deleteKelasController);
+router.delete("/kelas/delete/:id", deleteKelasController);
 
 router.get("/kelas/get/:nama_kelas", getMuridControllerBySingleKelas);
 

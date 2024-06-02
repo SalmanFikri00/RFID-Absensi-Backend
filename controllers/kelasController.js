@@ -73,21 +73,20 @@ const editKelasController = asyncHandler(async (req, res) => {
 
 // Controller untuk menghapus kelas
 const deleteKelasController = asyncHandler(async (req, res) => {
-    const { id } = req.body;
-
+    const { id } = req.params;
+    console.log(id)
     if (!id) {
         return res.status(400).json({ message: "ID diperlukan" });
     }
 
     try {
-        const kelas = await Kelas.findById(id);
-
+        const kelas = await Kelas.findByIdAndDelete(id);
+        console.log(kelas)
         if (!kelas) {
             return res.status(404).json({ message: "Kelas tidak ditemukan" });
         }
 
-        await kelas.remove();
-
+        
         res.status(200).json({ message: "Kelas berhasil dihapus" });
     } catch (error) {
         res.status(500).json({ message: "Terjadi kesalahan saat menghapus kelas", error });

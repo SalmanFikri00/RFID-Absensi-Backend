@@ -40,7 +40,7 @@ const authUser = asyncHandler(async (req, res) => {
             massage: "login successful",
         });
     } else {
-        res.status(404).json({
+        res.status(404).json({ 
             status: "failed",
             massage: "email or password incorrect",
         });

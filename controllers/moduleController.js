@@ -65,6 +65,12 @@ const getAbsensiByKelas = asyncHandler(async (req, res) => {
     return res.status(200).json({ data: findKelas });
 });
 
+const getAbsensiByTanggal = asyncHandler(async(req, res) => {
+    const { tanggal } = req.params;
+    const findTanggal = await Absen.find({ tanggal });
+    return res.status(200).json({ data: findTanggal });
+})
+
 const updateDataMurid = asyncHandler(async (req, res) => {
     const data = req.body; // Asumsi data diterima dalam req.body.data
     try {
@@ -84,4 +90,4 @@ const updateDataMurid = asyncHandler(async (req, res) => {
     }
 });
 
-export { moduleController, getAbsensi, getAbsensiByKelas, updateDataMurid };
+export { moduleController, getAbsensi, getAbsensiByKelas, updateDataMurid, getAbsensiByTanggal };

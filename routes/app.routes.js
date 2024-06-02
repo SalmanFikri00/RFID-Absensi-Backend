@@ -2,7 +2,7 @@ import express from "express";
 import { setIotData } from "../controllers/iotController.js";
 import { getKelasController, getMuridControllerBySingleKelas, addKelasController, editKelasController, deleteKelasController } from "../controllers/kelasController.js";
 
-import { getAbsensi, getAbsensiByKelas, updateDataMurid  } from "../controllers/moduleController.js";
+import { getAbsensi, getAbsensiByKelas, updateDataMurid, getAbsensiByTanggal  } from "../controllers/moduleController.js";
 
 const router = express.Router();
 
@@ -21,6 +21,8 @@ router.get("/kelas/all", getKelasController);
 router.get("/absensi", getAbsensi);
 
 router.get("/absensi/:kelas", getAbsensiByKelas);
+
+router.get("/absensi/tanggal/:tanggal", getAbsensiByTanggal);
 
 router.post("/murid/edit", updateDataMurid)
 

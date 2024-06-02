@@ -11,9 +11,19 @@ const getMuridControllerBySingleKelas = asyncHandler(async (req, res) => {
     const { nama_kelas } = req.params;
     const allMurid = await Murid.find({
         kelas: nama_kelas,
-    });
-    return res.status(200).json({ data: allMurid });
+    })
+
+    const filteredMurid = allMurid.map(murid => ({
+        RF_ID: murid.RF_ID,
+        kelas: murid.kelas,
+        nama: murid.nama,
+        alamat: murid.alamat,
+        nis: murid.nis,
+    }));
+
+    return res.status(200).json({ data: filteredMurid });
 });
+
 
 // Controller untuk menambahkan kelas
 const addKelasController = asyncHandler(async (req, res) => {

@@ -6,13 +6,13 @@ const muridSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    nama : {
-        type: String,
-        required: false
-    },
     kelas: {
         type: String,
         required: true
+    },
+    nama : {
+        type: String,
+        required: false
     },
     alamat: {
         type: String,

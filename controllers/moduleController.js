@@ -21,16 +21,26 @@ const moduleController = asyncHandler(async (req, res) => {
 
     if (!module || module.mode == "absen") {
         const muridExist = await Murid.findOne({ RF_ID: key });
-        const Absensi = await Absen.create({
-            kelas: muridExist.kelas,
-            nama: muridExist.nama,
-            keterangan: keterangan,
-            tanggal: currentTime.format("YYYY-MM-DD"),
-        });
-        response = {
-            message: "succes",
-            data: Absensi,
-        };
+        
+        if( muridExist.name ){
+
+                const Absensi = await Absen.create({
+                    kelas: muridExist.kelas,
+                    nama: muridExist.nama,
+                    keterangan: keterangan,
+                tanggal: currentTime.format("YYYY-MM-DD"),
+            });
+            response = {
+                message: "berhasil absen: " +muridExist.name ,
+                data: Absensi,
+            };
+            
+        }else {
+            response = {
+                message: "data belum lengkap",
+            };
+
+        }
     } else {
         const exist = await Murid.findOne({ RF_ID: key });
         if (!exist) {
@@ -41,10 +51,6 @@ const moduleController = asyncHandler(async (req, res) => {
                 alamat: "",
                 nis: "",
             });
-<<<<<<< HEAD
-
-=======
->>>>>>> 2108f3aad54b8fbbdc655883a0433560f3b01585
             response = {
                 message: "berhasil membuat",
                 data: result,
@@ -55,8 +61,9 @@ const moduleController = asyncHandler(async (req, res) => {
             };
         }
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 });
+
 
 const getAbsensi = asyncHandler(async (req, res) => {
     const Absensi = await Absen.find();
@@ -70,7 +77,8 @@ const getAbsensiByKelas = asyncHandler(async (req, res) => {
 });
 
 const updateDataMurid = asyncHandler(async (req, res) => {
-    const data = req.body; // Asumsi data diterima dalam req.body.data
+    const { data } = req.body; // Asumsi data diterima dalam req.body.data
+    console.log(data)
     try {
         // Iterasi melalui data dan perbarui database
         for (const murid of data) {

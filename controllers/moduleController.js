@@ -10,6 +10,8 @@ const moduleController = asyncHandler(async (req, res) => {
     const kode_id = req.params.id;
     const module = await Iot.findOne({ kode_id });
 
+    console.log(key)
+
     const currentTime = moment();
     const batasWaktu = moment().set({ hour: 6, minute: 30 });
     let keterangan = "";
@@ -22,7 +24,8 @@ const moduleController = asyncHandler(async (req, res) => {
     if (!module || module.mode == "absen") {
         const muridExist = await Murid.findOne({ RF_ID: key });
         
-        if( muridExist.name ){
+
+        if( muridExist.nama ){
 
                 const Absensi = await Absen.create({
                     kelas: muridExist.kelas,
@@ -31,13 +34,13 @@ const moduleController = asyncHandler(async (req, res) => {
                 tanggal: currentTime.format("YYYY-MM-DD"),
             });
             response = {
-                message: "berhasil absen: " +muridExist.name ,
-                data: Absensi,
+                message: "berhasil: " +muridExist.nama ,
+                // data: Absensi,
             };
             
         }else {
             response = {
-                message: "data belum lengkap",
+                message: "belum lengkap",
             };
 
         }

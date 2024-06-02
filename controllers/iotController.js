@@ -14,6 +14,16 @@ const setIotData = asyncHandler(async (req, res) => {
 
     if (!exists) {
         const newIot = await Iot.create({ kode_id, mode });
+
+        const existsKelas = await Kelas.findOne({
+            nama_kelas: (mode == 'absen' ? exists.mode : mode),
+        });
+
+        if (existsKelas) {
+            existsKelas.edit_by = (mode == 'absen' ? '' : kode_id);
+            await existsKelas.save();
+        }
+
         return res.status(201).json({
             message: "berhasil di set",
             data: newIot,

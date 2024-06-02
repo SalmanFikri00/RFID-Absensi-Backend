@@ -22,27 +22,29 @@ const moduleController = asyncHandler(async (req, res) => {
     if (!module || module.mode == "absen") {
         const muridExist = await Murid.findOne({ RF_ID: key });
         const Absensi = await Absen.create({
-            nama: muridExist.nama,
             kelas: muridExist.kelas,
+            nama: muridExist.nama,
             keterangan: keterangan,
-            tanggal: currentTime.format("YYYY-MM-DD")
+            tanggal: currentTime.format("YYYY-MM-DD"),
         });
         response = {
             message: "succes",
             data: Absensi,
         };
-        
     } else {
         const exist = await Murid.findOne({ RF_ID: key });
         if (!exist) {
             const result = await Murid.create({
                 RF_ID: key,
                 kelas: module.mode,
-                nama: "haloo",
+                nama: "",
                 alamat: "",
                 nis: "",
             });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2108f3aad54b8fbbdc655883a0433560f3b01585
             response = {
                 message: "berhasil membuat",
                 data: result,
@@ -56,4 +58,34 @@ const moduleController = asyncHandler(async (req, res) => {
     res.status(200).json(response);
 });
 
-export { moduleController };
+const getAbsensi = asyncHandler(async (req, res) => {
+    const Absensi = await Absen.find();
+    return res.status(200).json({ data: Absensi });
+});
+
+const getAbsensiByKelas = asyncHandler(async (req, res) => {
+    const { kelas } = req.params;
+    const findKelas = await Absen.find({ kelas });
+    return res.status(200).json({ data: findKelas });
+});
+
+const updateDataMurid = asyncHandler(async (req, res) => {
+    const data = req.body; // Asumsi data diterima dalam req.body.data
+    try {
+        // Iterasi melalui data dan perbarui database
+        for (const murid of data) {
+            const { RF_ID, kelas, nama, alamat, nis } = murid;
+            await Murid.updateOne({ RF_ID }, { kelas, nama, alamat, nis }, { upsert: true });
+        }
+        // Mengambil data yang sudah diperbarui
+        const updatedMurid = await Murid.find({}).select("RF_ID kelas nama alamat nis").lean();
+
+        // Mengembalikan hasil sebagai JSON
+        res.status(200).json({ data: updatedMurid });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+export { moduleController, getAbsensi, getAbsensiByKelas, updateDataMurid };

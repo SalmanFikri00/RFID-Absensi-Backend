@@ -12,8 +12,7 @@ const absenModel = new mongoose.Schema({
     keterangan: {
         type: String,
         required: true,
-        enum: ['Masuk', 'Terlambat', 'Tidak Masuk'],
-        default: "Tidak Masuk"
+        enum: ['Masuk', 'Terlambat'],
     },
     tanggal: {
         type: String,

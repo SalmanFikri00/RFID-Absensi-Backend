@@ -26,13 +26,15 @@ app.use(cors({
 
 
 //Nambahin Route Dari folder routes
-
 app.use('/', moduleRoutes)
 app.use('/users', userRoutes)
 app.use('/app', appRoutes)
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2108f3aad54b8fbbdc655883a0433560f3b01585
 app.get("/", (req, res) => {
     res.send("server ready");
 });

@@ -4,12 +4,10 @@ import Iot from "../models/iotModels.js";
 import Murid from "../models/muridModels.js";
 import Absen from "../models/absenModel.js";
 
-const moduleController = asyncHandler(async (req, res) => {
-    let response = {};
-    const { key } = req.body;
-    const kode_id = req.params.id;
-    const module = await Iot.findOne({ kode_id });
+const moduleController = async (key , kode_id) => {
 
+    const module = await Iot.findOne({ kode_id });
+    let response
     console.log(key)
 
     const currentTime = moment();
@@ -24,25 +22,35 @@ const moduleController = asyncHandler(async (req, res) => {
     if (!module || module.mode == "absen") {
         const muridExist = await Murid.findOne({ RF_ID: key });
         
+        console.log(muridExist)
 
-        if( muridExist.nama ){
+        if( muridExist ){
 
+            if( muridExist.nama ){
+
+                
                 const Absensi = await Absen.create({
                     kelas: muridExist.kelas,
                     nama: muridExist.nama,
                     keterangan: keterangan,
-                tanggal: currentTime.format("YYYY-MM-DD"),
-            });
-            response = {
-                message: "berhasil: " +muridExist.nama ,
-                // data: Absensi,
-            };
+                    tanggal: currentTime.format("YYYY-MM-DD"),
+                });
+                response = {
+                    action: "absen_berhasil",
+                    data: muridExist.nama,
+                };
+            }else{
+                response = {
+                    action: "absen_gagal",
+                    data: 'data kosong',
+                };
+            }
             
         }else {
             response = {
-                message: "belum lengkap",
+                action: "absen_gagal",
+                data: "tidak terdaftar",
             };
-
         }
     } else {
         const exist = await Murid.findOne({ RF_ID: key });
@@ -55,55 +63,22 @@ const moduleController = asyncHandler(async (req, res) => {
                 nis: "",
             });
             response = {
-                message: "berhasil membuat",
-                data: result,
+                action: "mode_daftar",
+                data: "berhasil membuat",
             };
         } else {
             response = {
-                message: "telah tersedia",
+                action: "mode_daftar",
+                data: "sudah tersedia",
             };
         }
     }
-    return res.status(200).json(response);
-});
+    return response;
+}
 
 
-const getAbsensi = asyncHandler(async (req, res) => {
-    const Absensi = await Absen.find();
-    return res.status(200).json({ data: Absensi });
-});
 
-const getAbsensiByKelas = asyncHandler(async (req, res) => {
-    const { kelas } = req.params;
-    const findKelas = await Absen.find({ kelas });
-    return res.status(200).json({ data: findKelas });
-});
 
-const getAbsensiByTanggal = asyncHandler(async(req, res) => {
-    const { tanggal } = req.params;
-    console.log(tanggal)
-    const findTanggal = await Absen.find({ tanggal });
-    return res.status(200).json({ data: findTanggal });
-})
 
-const updateDataMurid = asyncHandler(async (req, res) => {
-    const { data } = req.body; // Asumsi data diterima dalam req.body.data
-    console.log(data)
-    try {
-        // Iterasi melalui data dan perbarui database
-        for (const murid of data) {
-            const { RF_ID, kelas, nama, alamat, nis } = murid;
-            await Murid.updateOne({ RF_ID }, { kelas, nama, alamat, nis }, { upsert: true });
-        }
-        // Mengambil data yang sudah diperbarui
-        const updatedMurid = await Murid.find({}).select("RF_ID kelas nama alamat nis").lean();
 
-        // Mengembalikan hasil sebagai JSON
-        res.status(200).json({ data: updatedMurid });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
-
-export { moduleController, getAbsensi, getAbsensiByKelas, updateDataMurid, getAbsensiByTanggal };
+export { moduleController }

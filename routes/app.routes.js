@@ -2,7 +2,7 @@ import express from "express";
 import { setIotData } from "../controllers/iotController.js";
 import { getKelasController, getMuridControllerBySingleKelas, addKelasController, editKelasController, deleteKelasController } from "../controllers/kelasController.js";
 
-import { getAbsensi, getAbsensiByKelas, updateDataMurid, getAbsensiByTanggal  } from "../controllers/moduleController.js";
+import { getAbsensi, getAbsensiByKelas, updateDataMurid, getAbsensiByTanggal  } from "../controllers/absensiController.js";
 
 const router = express.Router();
 

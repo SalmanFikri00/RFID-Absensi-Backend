@@ -11,9 +11,12 @@ const port = process.env.PORT || 5000
 import cookieParser from 'cookie-parser';
 const app = express()
 import cors from 'cors'
+import { connect as mqttConnect, Client } from 'mqtt';
+import { onMessage ,mqttClient, onConnect } from "./controllers/mqttController.js";
+
+
 
 //wajibe
-
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -26,7 +29,6 @@ app.use('/', moduleRoutes)
 app.use('/users', userRoutes)
 app.use('/app', appRoutes)
 
-
 app.get("/", (req, res) => {
     res.send("server ready");
 });
@@ -35,4 +37,7 @@ app.listen(port, () => {
     console.log(`server listen on port : ${port}`);
 });
 
+
+mqttClient.on('connect', onConnect);
+mqttClient.on('message', onMessage);
 connectDB();
